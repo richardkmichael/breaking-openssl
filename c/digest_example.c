@@ -49,14 +49,14 @@ int main(int argc, char* argv[])
   }
 
   // The encrypt function will fill in the message length.  Used to iterate later.
-  unsigned int *encrypted_message_length_ptr;
+  unsigned int encrypted_message_length_ptr;
 
   // A pointer to the encrypted message.
-  unsigned char *encrypted_message_ptr = encrypt(message, encrypted_message_length_ptr);
+  unsigned char *encrypted_message_ptr = encrypt(message, &encrypted_message_length_ptr);
 
   // Print out the encrypted message as 0-padded 2-digit unsigned hexidecimal.
   int i;
-  for(i = 0; i < *encrypted_message_length_ptr; i++) {
+  for(i = 0; i < encrypted_message_length_ptr; i++) {
     printf("%02x", encrypted_message_ptr[i]);  // Pointer / array equivalence.
   }
   printf("\n");

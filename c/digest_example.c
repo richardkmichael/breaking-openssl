@@ -2,10 +2,7 @@
 #include <string.h>
 #include <openssl/evp.h>
 
-// int main(int argc, char *argv[])
-// int main()
-// void encrypt(char message[])
-unsigned char *encrypt(char message[], unsigned int *md_value_length)
+unsigned char *encrypt(char message[], unsigned int *md_value_length_ptr)
 {
   // Load the available digests.
   OpenSSL_add_all_digests();
@@ -26,26 +23,21 @@ unsigned char *encrypt(char message[], unsigned int *md_value_length)
 
   // A char array to hold the digest.
   // unsigned char md_value[EVP_MAX_MD_SIZE];
-  unsigned char *md_value = (unsigned char *) malloc(EVP_MAX_MD_SIZE);
+  unsigned char *md_value_ptr = (unsigned char *) malloc(EVP_MAX_MD_SIZE);
   // int md_value_length;
 
-  // TODO: We cannot return md_value itself: we'd return a pointer, but lose the contents (outside
-  // this function).  Solutions: put the md_value on the heap with malloc, pass a size pointer into
-  // which we can write the size; or, NUL terminate md_value.
-
   // Compute then store the digest and digest length our variables.
-  // TODO: "pointer targets in passing argument 3 of ‘EVP_DigestFinal_ex’ differ in signedness"
-  EVP_DigestFinal_ex(md_ctx_ptr, md_value, md_value_length);
+  EVP_DigestFinal_ex(md_ctx_ptr, md_value_ptr, md_value_length_ptr);
 
   // Free the context.
   EVP_MD_CTX_destroy(md_ctx_ptr);
 
-  return md_value;
+  // Return a pointer to the encrypted message.
+  return md_value_ptr;
 }
 
 int main(int argc, char* argv[])
 {
-
   // The message to encrypt.
   char *message;
 
@@ -53,18 +45,19 @@ int main(int argc, char* argv[])
   if (argv[1]) {
     message = argv[1];
   } else {
-    message = "Test message."; // Character array is like a pointer.
+    message = "Test message."; // Character array is essentially a pointer.
   }
 
-  unsigned int encrypted_message_length;
+  // The encrypt function will fill in the message length.  Used to iterate later.
+  unsigned int *encrypted_message_length_ptr;
 
-  unsigned char *encrypted_message;
-  encrypted_message = encrypt(message, &encrypted_message_length);
+  // A pointer to the encrypted message.
+  unsigned char *encrypted_message_ptr = encrypt(message, encrypted_message_length_ptr);
 
   // Print out the encrypted message as 0-padded 2-digit unsigned hexidecimal.
   int i;
-  for(i = 0; i < encrypted_message_length; i++) {
-    printf("%02x", encrypted_message[i]);
+  for(i = 0; i < *encrypted_message_length_ptr; i++) {
+    printf("%02x", encrypted_message_ptr[i]);  // Pointer / array equivalence.
   }
   printf("\n");
 

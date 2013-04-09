@@ -1,3 +1,5 @@
 *.dSYM
 *.o
 *.dylib*
+
+digest_example

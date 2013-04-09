@@ -1,8 +1,8 @@
-cflags := -Wall -g $(CFLAGS)
-cc=gcc
+default: encrypt digester
 
-# default:
-# 	$(CC) $(CFLAGS) test.c -o test
+encrypt:
+	gcc -fPIC -fno-common -dynamic -c encrypt.c -o encrypt.o
+	libtool -lc -lcrypto -dynamic -o libencrypt.dylib encrypt.o
 
-# clean:
-# 	rm test
+digester:
+	gcc -I. -L. -lencrypt digest_example.c -o digest_example

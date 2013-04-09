@@ -1,17 +1,14 @@
-# Compile the test library and test program
+## Compile the test library and test program
 
-     # Compile the library.
+     # Compile, create and inspect the library.
      gcc -fPIC -fno-common -dynamic -c encrypt.c -o encrypt.o
      libtool -lc -lcrypto -dynamic -o libencrypt.dylib encrypt.o
-
-     # Inspect the linking and file type.
      otool -L libencrypt.dylib
      file libencrypt.dylib
+     nm libencrypt.dylib
 
-     # Compile and link the test program.
+     # Compile, link and inspect the test program.
      gcc -I. -L. -lencrypt digest_example.c -o digest_example
-
-     # Inspect the linking and file type.
      otool -L digest_example
      file digest_example
 

@@ -31,7 +31,3 @@ int main()
   printf("Size of encrypted_string: %ld\n", sizeof *encrypted_string);
   return 0;
 }
-
-
-/*
-*/

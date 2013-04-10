@@ -1,0 +1,13 @@
+require "bundler/gem_tasks"
+
+# Bundler doesn't give us a 'test' task, add one.
+require 'rake/testtask'
+Rake::TestTask.new do |task|
+  task.libs << 'lib/encrypter.rb'
+  task.verbose = true
+  task.warning = true
+end
+
+# An extension rake task from rake-compiler.
+require 'rake/extensiontask'
+Rake::ExtensionTask.new 'encrypter'

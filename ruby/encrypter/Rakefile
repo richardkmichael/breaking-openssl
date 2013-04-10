@@ -11,3 +11,6 @@ end
 # An extension rake task from rake-compiler.
 require 'rake/extensiontask'
 Rake::ExtensionTask.new 'encrypter'
+
+# Build the C extension before testing.
+Rake::Task[:test].prerequisites << :compile

@@ -18,3 +18,4 @@ tmp
 
 # Will be built on each client.
 /lib/encrypter.bundle
+/lib/encrypter/encrypter.bundle

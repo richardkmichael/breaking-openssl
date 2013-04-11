@@ -10,9 +10,10 @@ end
 
 # An extension rake task from rake-compiler.
 require 'rake/extensiontask'
-Rake::ExtensionTask.new 'encrypter'# do |task|
-#   task.lib_dir = File.join 'lib', 'encrypter' # ==> @tenderlove's convention. Why? ...
-# end
+Rake::ExtensionTask.new 'encrypter' do |task|
+  # Write to "lib/encrypter/encrypter.bundle" to keep components together.
+  task.lib_dir = File.join 'lib', 'encrypter'
+end
 
 # Build the C extension before testing.
 Rake::Task[:test].prerequisites << :compile

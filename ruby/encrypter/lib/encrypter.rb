@@ -6,7 +6,3 @@ require "encrypter/version"
 
 # Require our C extension "encrypter/encrypter.bundle".
 require "encrypter/encrypter"
-
-module Encrypter
-  # Your code goes here...
-end

@@ -1,7 +1,7 @@
 #include <string.h>
 #include <openssl/evp.h>
 
-unsigned char *encrypt(char message[], unsigned int *md_value_length_ptr)
+char *encrypt(char message[], unsigned int *md_value_length_ptr)
 {
   // Load the available digests.
   OpenSSL_add_all_digests();
@@ -31,6 +31,7 @@ unsigned char *encrypt(char message[], unsigned int *md_value_length_ptr)
   // Free the context.
   EVP_MD_CTX_destroy(md_ctx_ptr);
 
-  // Return a pointer to the encrypted message.
-  return md_value_ptr;
-}
+  // Because rb_str_new2() wants a signed char pointer, cast the unsigned pointer to the encrypted
+  // message to a signed pointer and return.  Characters in the array are in the SHA-2 character set
+  // {0-9A-F}, which are all 0 < e < 127 (ASCII).
+  return (char *) md_value_ptr; }

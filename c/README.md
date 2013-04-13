@@ -21,6 +21,7 @@
     gcc -dynamiclib -Wl,-headerpad_max_install_names,-undefined,dynamic_lookup,-compatibility_version,1.0,-current_version,1.0,-install_name,/usr/local/lib/libfoo.1.dylib
  -o libfoo.1.dylib $(OBJ)
 
+    gmake -B -n # ==> Force making (-B), but dry-run and show commands (-n).
 
 ## Resources
 
@@ -31,6 +32,8 @@ http://www.gnu.org/software/libc/manual/html_node/String-Length.html
 
 ### Ruby and C
 http://www.ruby-doc.org/docs/ProgrammingRuby/html/ext_ruby.html
+http://blog.mrkn.jp/2009/12/to-use-preprocessor-macros-on-gdb.html
+http://jonforums.github.io/ruby/2011/01/27/debugging-native-gems-1.html
 
 ## Learning
 
@@ -48,9 +51,17 @@ http://www.ruby-doc.org/docs/ProgrammingRuby/html/ext_ruby.html
 * C90 declarations and code
 * gdb
 
+### MacOS toolchain
+
+* gcc writes debug symbols in the .o (or shared lib, ex. *.bundle, etc.)
+* dsymutil foo.bundle extracts them to foo.dSYM/
+* -dynamic to gcc will pass through to MacOS libtool and link a shared
+   library instead of an executable
+
 ### Ruby
 
 * StringValue2
 * Check_Type()
 * gdb call rb_eval_string( .. );
+* Rebuild the Ruby interpreter to use C preprocessor macros in GDB
 

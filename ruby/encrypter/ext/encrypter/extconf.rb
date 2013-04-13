@@ -1,15 +1,5 @@
 require 'mkmf'
 
-# TODO: This changes all the CFLAGS, as:
-# $ diff Makefile*
-# < CFLAGS   = -fno-common $(cflags)  -fno-common -pipe $(ARCH_FLAG)
-# ---
-# > CFLAGS   = -fno-common -Wall $(ARCH_FLAG)
-
-# with_cflags '-Wall' do
-#   create_makefile 'encrypter'
-# end
-
 # The test C library lives several directories up, beside this project.
 LIBRARY_DIRS = [ File.join(RbConfig::CONFIG['srcdir'], '../../../../c') ]
 HEADER_DIRS  = [ File.join(RbConfig::CONFIG['srcdir'], '../../../../c') ]
@@ -24,7 +14,19 @@ unless find_library('encrypt', 'encrypt')
   abort "libencrypt shared library not found in:\n" + LIBRARY_DIRS.join('\n')
 end
 
-# TODO: create_makefile 'encrypter/encrypter' # ==> @tenderlove's convention. Why? Creates install
-# point in a sub-directory.
-create_makefile 'encrypter/encrypter'
+# @tenderlove's convention. Creates install point in a sub-directory to group both Ruby and C
+# library components under lib/encrypter.
+# create_makefile 'encrypter/encrypter'
 
+# TODO: This changes all the CFLAGS, as:
+# $ diff Makefile*
+# < CFLAGS   = -fno-common $(cflags)  -fno-common -pipe $(ARCH_FLAG)
+# ---
+# > CFLAGS   = -fno-common -Wall $(ARCH_FLAG)
+
+# -ggdb debugging is always enabled, but this turns off optimizations which are -O3 by default.
+with_cflags '-O0 $(debugflags) $(warnflags) -pipe' do
+  create_makefile 'encrypter/encrypter'
+end
+
+# sleep 1000;

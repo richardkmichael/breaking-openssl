@@ -63,5 +63,9 @@ http://jonforums.github.io/ruby/2011/01/27/debugging-native-gems-1.html
 * StringValue2
 * Check_Type()
 * gdb call rb_eval_string( .. );
-* Rebuild the Ruby interpreter to use C preprocessor macros in GDB
+* Rebuild the Ruby interpreter to use C preprocessor macros in GDB:
+
+    # -ggdb3 should cause DWARF format (when available), but I can't
+       tell if is, so enable explicitly.
+    export optflags="-O0 -g3 -gdwarf-2"; rvm install ruby-1.9.3-p392-debug
 

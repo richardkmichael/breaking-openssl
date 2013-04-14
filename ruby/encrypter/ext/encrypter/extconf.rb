@@ -28,5 +28,3 @@ end
 with_cflags '-O0 $(debugflags) $(warnflags) -pipe' do
   create_makefile 'encrypter/encrypter'
 end
-
-# sleep 1000;

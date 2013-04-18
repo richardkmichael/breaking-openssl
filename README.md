@@ -1,6 +1,7 @@
-## Compile the test library and test program
+## C: Compile the test library and test program
 
      # Compile, create and inspect the library.
+     cd c
      gcc -fPIC -fno-common -dynamic -c encrypt.c -o encrypt.o
      libtool -lc -lcrypto -dynamic -o libencrypt.dylib encrypt.o
      otool -L libencrypt.dylib
@@ -12,16 +13,22 @@
      otool -L digest_example
      file digest_example
 
-## Compiler details
+### Compiler details
 
     gcc --version
     which gcc
     gcc --print-prog-name=ld
-
-    gcc -dynamiclib -Wl,-headerpad_max_install_names,-undefined,dynamic_lookup,-compatibility_version,1.0,-current_version,1.0,-install_name,/usr/local/lib/libfoo.1.dylib
- -o libfoo.1.dylib $(OBJ)
-
+    gcc -dynamiclib -Wl,-headerpad_max_install_names,-undefined,dynamic_lookup,-compatibility_version,1.0,-current_version,1.0,-install_name,/usr/local/lib/libfoo.1.dylib -o libfoo.1.dylib $(OBJ)
     gmake -B -n # ==> Force making (-B), but dry-run and show commands (-n).
+
+## Ruby: Compile the extension and run a small program
+
+    # Compile the extension
+    cd ruby/encrypter
+    bundle instal
+    rake compile
+    export DYLD_LIBRARY_PATH=path/to/breaking-openssl/c
+    ruby -Ilib -rencrypter/encrypter -e 'Encrypter.encrypt "foo"'
 
 ## Resources
 
@@ -64,8 +71,5 @@ http://jonforums.github.io/ruby/2011/01/27/debugging-native-gems-1.html
 * Check_Type()
 * gdb call rb_eval_string( .. );
 * Rebuild the Ruby interpreter to use C preprocessor macros in GDB:
-
-    # -ggdb3 should cause DWARF format (when available), but I can't
-       tell if is, so enable explicitly.
-    export optflags="-O0 -g3 -gdwarf-2"; rvm install ruby-1.9.3-p392-debug
-
+* `-ggdb3` should cause DWARF format (when available), but I can't tell
+if is, so enable explicitly: `export optflags="-O0 -g3 -gdwarf-2"; rvm install ruby-1.9.3-p392-debug`
